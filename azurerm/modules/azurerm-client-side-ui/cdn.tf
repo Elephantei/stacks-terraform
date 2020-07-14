@@ -77,12 +77,11 @@ resource "null_resource" "custom_domain" {
   }
 }
 
-
 # Workaround for a current bug
 # CLI version 2.31 - still exists
 # https://github.com/Azure/azure-cli/issues/12152
 # can be set to az cli once fixed
-# end goal to remove and make this part of terraform onec Go SDK from MS makes this possible 
+# end goal to remove and make this part of terraform once Go SDK from MS makes this possible
 # az cdn custom-domain enable-https --endpoint-name ${azurerm_cdn_endpoint.default.name} \
 #   --name ${local.app_hostname} \
 #   --profile-name ${azurerm_cdn_profile.default.name} \

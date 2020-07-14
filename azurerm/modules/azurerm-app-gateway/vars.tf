@@ -94,11 +94,7 @@ variable "dns_zone" {
   default = ""
 }
 
-variable "aks_ingress_private_ip" {
-  type = string
-}
-
-variable "aks_ingress_public_ip" {
+variable "aks_ingress_ip" {
   type = string
 }
 
@@ -107,7 +103,7 @@ variable "aks_ingress_public_ip" {
 # ##########################
 
 variable "aks_resource_group" {
-  type    = string
+  type = string
 }
 
 ###########################
@@ -115,17 +111,22 @@ variable "aks_resource_group" {
 ##########################
 
 variable "ssl_policy" {
-  type = object({policy_type=string,policy_name=string,min_protocol_version=string,disabled_protocols=list(string),cipher_suites=list(string)})
+  type        = object({ policy_type = string, policy_name = string, min_protocol_version = string, disabled_protocols = list(string), cipher_suites = list(string) })
   description = "SSL policy definition, defaults to latest Predefined settings with min protocol of TLSv1.2"
   default = {
-    "policy_type"="Predefined",
-    "policy_name"="AppGwSslPolicy20170401S",
-    "min_protocol_version"="TLSv1_2",
-    "disabled_protocols"=null,
-    "cipher_suites"=null
+    "policy_type"          = "Predefined",
+    "policy_name"          = "AppGwSslPolicy20170401S",
+    "min_protocol_version" = "TLSv1_2",
+    "disabled_protocols"   = null,
+    "cipher_suites"        = null
   }
 }
 
+variable cert_name {
+  type = string
+  default = "sample.cert.pfx"
+  description = "Certificate name stored under certs/ locally, to be used for SSL appgateway"
+}
 ###########################
 # MISC SETTINGS
 ##########################
@@ -136,7 +137,7 @@ variable "resource_namer" {
 }
 
 variable "pfx_password" {
-  type = string
+  type    = string
   default = "Password1"
 }
 
