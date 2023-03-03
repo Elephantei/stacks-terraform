@@ -22,6 +22,12 @@ variable "hns_enabled" {
   default     = true
 }
 
+variable "blob_type" {
+  type        = string
+  description = "The type of the storage blob to be created. Possible values are Append, Block or Page"
+  default     = "Block"
+}
+
 variable "resource_group_name" {
   type        = string
   description = "Resource Group Name"
