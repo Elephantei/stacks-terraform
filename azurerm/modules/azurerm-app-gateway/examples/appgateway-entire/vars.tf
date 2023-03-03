@@ -100,14 +100,14 @@ variable "create_aksvnet" {
   default = true
 }
 
-variable "create_user_identiy" {
+variable "create_user_identity" {
   type    = bool
   default = true
 }
 
 variable "cluster_version" {
   type    = string
-  default = "1.16.7"
+  default = "1.24.6"
 }
 
 variable "create_acr" {
@@ -132,13 +132,13 @@ variable "log_application_type" {
   default = "other"
 }
 
-variable key_vault_name {
+variable "key_vault_name" {
   description = "Key Vault name - if not specificied will default to computed naming convention"
   type        = string
   default     = ""
 }
 
-variable acme_email {
+variable "acme_email" {
   type        = string
   description = "Email for Acme registration, must be a valid email"
 }

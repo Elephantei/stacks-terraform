@@ -67,7 +67,7 @@ variable "resource_group_tags" {
 ###########################
 # IDENTITY SETTINGS
 ##########################
-variable "create_user_identiy" {
+variable "create_user_identity" {
   description = "Creates a User Managed Identity - which can be used subsquently with AAD pod identity extensions"
   type        = bool
   default     = true
@@ -190,10 +190,10 @@ variable "create_aks" {
 variable "cluster_version" {
   description = "Specify AKS cluster version - please refer to MS for latest updates on the available versions. NB: opt for stable versions where possible"
   type        = string
-  default     = "1.19.11"
+  default     = "1.24.6"
 }
 
-variable cluster_name {
+variable "cluster_name" {
   description = "Name for the cluster"
   default     = "akscluster"
 }
@@ -239,6 +239,17 @@ variable "min_nodes" {
 variable "node_count" {
   type    = number
   default = 0
+}
+
+variable "aks_node_pools" {
+  type = map(object({
+    vm_size      = string,
+    auto_scaling = bool,
+    min_nodes    = number,
+    max_nodes    = number
+  }))
+  description = "Additional node pools as required by the platform"
+  default     = {}
 }
 
 # DEFAULTS TO 30 if not overwritten
@@ -313,7 +324,7 @@ variable "log_application_type" {
   default     = "other"
 }
 
-variable key_vault_name {
+variable "key_vault_name" {
   description = "Key Vault name - if not specificied will default to computed naming convention"
   type        = string
   default     = ""
