@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "adls_default" {
-  name                     = var.resource_namer
+  name                     = var.storage_account_name
   resource_group_name      = var.resource_group_name
   location                 = var.resource_group_location
   account_kind             = var.account_kind

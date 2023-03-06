@@ -25,5 +25,6 @@ module "adls_de_default" {
   resource_namer          = module.default_label.id
   resource_group_name     = azurerm_resource_group.default.name
   resource_group_location = azurerm_resource_group.default.location
+  storage_account_name    = replace("${module.default_label.namespace}", "-", "")
 
 }

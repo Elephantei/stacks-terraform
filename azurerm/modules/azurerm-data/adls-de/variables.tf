@@ -12,8 +12,8 @@ variable "account_kind" {
 
 variable "account_tier" {
   type        = string
-  description = "value"
-  default     = "Defines the Tier to use for this storage account. Valid options are Standard and Premium. For BlockBlobStorage and FileStorage accounts only Premium is valid. Changing this forces a new resource to be created."
+  description = "Defines the Tier to use for this storage account. Valid options are Standard and Premium. For BlockBlobStorage and FileStorage accounts only Premium is valid. Changing this forces a new resource to be created."
+  default     = "Standard"
 }
 
 variable "hns_enabled" {
@@ -51,29 +51,14 @@ variable "resource_namer" {
   default     = "genericname"
 }
 
+variable "storage_account_name" {
+  description = "Specifies the name of the storage account. Only lowercase Alphanumeric characters allowed. Changing this forces a new resource to be created. This must be unique across the entire Azure service, not just within the resource group."
+  type        = string
+
+}
 ############################################
 # NAMING
 ############################################
-
-variable "name_company" {
-  description = "Company Name - should/will be used in conventional resource naming"
-  type        = string
-}
-
-variable "name_project" {
-  description = "Project Name - should/will be used in conventional resource naming"
-  type        = string
-}
-
-variable "name_component" {
-  description = "Component Name - should/will be used in conventional resource naming. Typically this will be a logical name for this part of the system i.e. `API` || `middleware` or more generic like `Billing`"
-  type        = string
-}
-
-variable "name_environment" {
-  type = string
-}
-
 variable "stage" {
   type    = string
   default = "dev"
