@@ -1,7 +1,62 @@
-## Requirements
+# PROJECT_NAME
 
-No requirements.
+DESCRIPTION:
+---
+Bootstraps the infrastructure for {{SELECT_APP_TYPE }}. 
 
+Will be used within the provisioned pipeline for your application depending on the options you chose.
+
+Pipeline implementation for infrastructure relies on workspaces, you can pass in whatever workspace you want from {{ SELECT_DEPLOYMENT_TYPE }} pipeline YAML.
+
+PREREQUISITES:
+---
+Azure Subscripion
+  - SPN 
+    - Terraform will use this to perform the authentication for the API calls
+    - you will need the `client_id, subscription_id, client_secret, tenant_id`
+
+Terraform backend
+  - resource group (can be manually created for the terraform remote state)
+  - Blob storage container for the remote state management
+
+
+USAGE:
+---
+
+To activate the terraform backend for running locally we need to initialise the SPN with env vars to ensure you are running the same way as the pipeline that will ultimately be running any incremental changes.
+
+```bash
+docker run -it --rm -v $(pwd):/opt/tf-lib amidostacks/ci-tf:latest /bin/bash
+```
+
+```bash 
+export ARM_CLIENT_ID=xxxx \
+ARM_CLIENT_SECRET=yyyyy \
+ARM_SUBSCRIPTION_ID=yyyyy \
+ARM_TENANT_ID=yyyyy
+```
+
+alternatively you can run `az login` 
+
+To get up and running locally you will want to create  a `terraform.tfvars` file 
+```bash
+TFVAR_CONTENTS='''
+vnet_id                 = "amido-stacks-vnet-uks-dev"
+rg_name                 = "amido-stacks-rg-uks-dev"
+resource_group_location = "uksouth"
+name_company            = "amido"
+name_project            = "stacks"
+name_component          = "spa"
+name_environment        = "dev" 
+'''
+$TFVAR_CONTENTS > terraform.tfvars
+```
+
+```
+terraform workspace select dev || terraform workspace new dev
+```
+
+terraform init -backend-config=./backend.local.tfvars
 ## Providers
 
 | Name | Version |
@@ -37,7 +92,7 @@ No modules.
 | <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | n/a | `string` | `"uksouth"` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Resource Group Name | `string` | n/a | yes |
 | <a name="input_resource_namer"></a> [resource\_namer](#input\_resource\_namer) | This should be a uniformly created string - ideally using something like cloudposse label module to ensure conventions on naming are followed throughout organization. this value is used in all the places within the module to name resources - additionally it changes the string to ensure it conforms to Azure standards where appropriate - i.e. blob/KV/ACR names are stripped of non alphanumeric characters and in some cases strings are sliced to conform to max char length | `string` | `"genericname"` | no |
-| <a name="input_stage"></a> [stage](#input\_stage) | ########################################### NAMING ########################################### | `string` | `"dev"` | no |
+| <a name="input_stage"></a> [stage](#input\_stage) | n/a | `string` | `"dev"` | no |
 | <a name="input_storage_account_name"></a> [storage\_account\_name](#input\_storage\_account\_name) | Specifies the name of the storage account. Only lowercase Alphanumeric characters allowed. Changing this forces a new resource to be created. This must be unique across the entire Azure service, not just within the resource group. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to be assigned to all resources, NB if global tagging is enabled these will get overwritten periodically | `map(string)` | `{}` | no |
 
@@ -45,7 +100,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_adls_storage_account_id"></a> [adls\_storage\_account\_id](#output\_adls\_storage\_account\_id) | n/a |
-| <a name="output_adls_storage_account_primary_dfs_endpoint"></a> [adls\_storage\_account\_primary\_dfs\_endpoint](#output\_adls\_storage\_account\_primary\_dfs\_endpoint) | n/a |
-| <a name="output_default_storage_account_id"></a> [default\_storage\_account\_id](#output\_default\_storage\_account\_id) | n/a |
-| <a name="output_default_storage_account_primary_blob_endpoint"></a> [default\_storage\_account\_primary\_blob\_endpoint](#output\_default\_storage\_account\_primary\_blob\_endpoint) | n/a |
+| <a name="output_adls_storage_account_id"></a> [adls\_storage\_account\_id](#output\_adls\_storage\_account\_id) | The ID of the Storage Account. |
+| <a name="output_adls_storage_account_primary_dfs_endpoint"></a> [adls\_storage\_account\_primary\_dfs\_endpoint](#output\_adls\_storage\_account\_primary\_dfs\_endpoint) | The endpoint URL for DFS storage in the primary location. |
+| <a name="output_default_storage_account_primary_blob_endpoint"></a> [default\_storage\_account\_primary\_blob\_endpoint](#output\_default\_storage\_account\_primary\_blob\_endpoint) | The endpoint URL for blob storage in the primary location. |

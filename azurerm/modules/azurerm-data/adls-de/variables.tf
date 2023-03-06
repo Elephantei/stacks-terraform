@@ -51,14 +51,16 @@ variable "resource_namer" {
   default     = "genericname"
 }
 
+############################################
+# NAMING
+############################################
+
 variable "storage_account_name" {
   description = "Specifies the name of the storage account. Only lowercase Alphanumeric characters allowed. Changing this forces a new resource to be created. This must be unique across the entire Azure service, not just within the resource group."
   type        = string
 
 }
-############################################
-# NAMING
-############################################
+
 variable "stage" {
   type    = string
   default = "dev"
